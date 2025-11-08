@@ -622,6 +622,15 @@ button {
     color: var(--color-gray);
 }
 
+.info-item p a {
+    color: var(--color-gray);
+    transition: color var(--transition-speed) var(--transition-timing);
+}
+
+.info-item p a:hover {
+    color: var(--color-gold);
+}
+
 .social-links {
     display: flex;
     gap: 1rem;

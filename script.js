@@ -144,61 +144,8 @@ document.addEventListener('keydown', (e) => {
 // ===================================
 // Contact Form
 // ===================================
-const contactForm = document.getElementById('contactForm');
-const formSuccess = document.getElementById('formSuccess');
-const formError = document.getElementById('formError');
-
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    // Get form values
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const subject = document.getElementById('subject').value.trim();
-    const message = document.getElementById('message').value.trim();
-
-    // Basic validation
-    if (!name || !email || !subject || !message) {
-        showFormMessage('error', 'Please fill in all fields.');
-        return;
-    }
-
-    if (!validateEmail(email)) {
-        showFormMessage('error', 'Please enter a valid email address.');
-        return;
-    }
-
-    // Simulate form submission (since we can't actually send emails from static site)
-    // In a real scenario, you would send this to a backend service or use a service like Formspree
-    setTimeout(() => {
-        showFormMessage('success', 'Thank you! Your message has been sent successfully.');
-        contactForm.reset();
-    }, 500);
-});
-
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-function showFormMessage(type, message) {
-    formSuccess.style.display = 'none';
-    formError.style.display = 'none';
-
-    if (type === 'success') {
-        formSuccess.querySelector('p').textContent = `✓ ${message}`;
-        formSuccess.style.display = 'block';
-    } else {
-        formError.querySelector('p').textContent = `✗ ${message}`;
-        formError.style.display = 'block';
-    }
-
-    // Auto-hide message after 5 seconds
-    setTimeout(() => {
-        formSuccess.style.display = 'none';
-        formError.style.display = 'none';
-    }, 5000);
-}
+// Form is handled by formsubmit.co
+// No additional JavaScript needed for form submission
 
 // ===================================
 // Performance Optimization
