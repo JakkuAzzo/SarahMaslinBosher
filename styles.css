@@ -115,7 +115,7 @@ button {
 }
 
 .navbar.scrolled {
-    background-color: rgba(245, 245, 220, 0.98);
+    background-color: var(--color-white);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 1rem 0;
 }
@@ -159,6 +159,55 @@ button {
     transition: width var(--transition-speed) var(--transition-timing);
 }
 
+/* Mobile menu: when open, use a dark translucent overlay so white links remain readable
+   This avoids white-on-beige contrast problems when nav links are forced white over the hero. */
+.nav-menu.active {
+    left: 0 !important; /* ensure it's visible */
+    background-color: rgba(0,0,0,0.75) !important;
+    color: var(--color-white) !important;
+    z-index: 1600 !important; /* above hero overlay */
+    padding-top: 3.5rem !important;
+}
+
+.nav-menu.active .nav-link {
+    color: var(--color-white) !important;
+}
+
+/* Make each menu item visually separated on the dark overlay */
+.nav-menu.active li {
+    margin: 0.6rem 0 !important;
+}
+
+/* When the mobile menu is open, keep the hamburger/close bars black (always black per request) */
+.nav-toggle.active span {
+    background-color: var(--color-black) !important;
+}
+
+/* Default: make nav link text white for simplicity; .navbar.scrolled will override to black for contrast */
+.nav-link {
+    color: var(--color-white) !important;
+}
+
+/* Nav color variant for when over the dark hero (default state)
+   We revert to dark on .navbar.scrolled */
+.navbar .nav-link,
+.navbar .nav-logo,
+.nav-toggle span {
+    color: var(--color-white) !important;
+}
+
+.navbar.scrolled .nav-link,
+.navbar.scrolled .nav-logo,
+.navbar.scrolled .nav-toggle span {
+    color: var(--color-black) !important;
+}
+
+/* Ensure the hamburger (three bars) are black while the navbar sits over the dark hero
+   -- keep the bars visibly dark against the image; this targets the span backgrounds */
+.navbar:not(.scrolled) .nav-toggle span {
+    background-color: var(--color-black) !important;
+}
+
 .nav-link:hover::after,
 .nav-link.active::after {
     width: 100%;
@@ -168,6 +217,21 @@ button {
     display: none;
     flex-direction: column;
     gap: 5px;
+}
+
+/* Ensure the hamburger toggle sits above the mobile menu and remains clickable.
+   Also prevent the hidden menu from intercepting pointer events until active. */
+.nav-toggle {
+    position: relative;
+    z-index: 2001;
+}
+
+.nav-menu {
+    pointer-events: none;
+}
+
+.nav-menu.active {
+    pointer-events: auto;
 }
 
 .nav-toggle span {
@@ -192,6 +256,25 @@ button {
     padding: 2rem;
 }
 
+/* hero image override (dark image) */
+.hero {
+    background-image: url('src/images/Sarah/337315010_911808333420894_6681143236031467726_n.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    color: var(--color-white);
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6));
+    z-index: 0;
+}
+
+.hero > * { position: relative; z-index: 1; }
+
 .hero-content {
     animation: fadeInUp 1s var(--transition-timing);
 }
@@ -200,14 +283,14 @@ button {
     font-size: 4rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: var(--color-black);
+    color: var(--color-white);
     letter-spacing: -1px;
 }
 
 .hero-subtitle {
     font-size: 1.5rem;
     font-weight: 300;
-    color: var(--color-gray);
+    color: rgba(255,255,255,0.9);
     margin-bottom: 2.5rem;
 }
 
@@ -249,6 +332,17 @@ button {
     color: var(--color-beige-light);
 }
 
+/* Make the hero's secondary (Contact) button white against the dark hero image */
+.hero .btn-secondary {
+    color: var(--color-white);
+    border-color: rgba(255,255,255,0.9);
+}
+
+.hero .btn-secondary:hover {
+    background-color: var(--color-white);
+    color: var(--color-black);
+}
+
 .hero-scroll {
     position: absolute;
     bottom: 2rem;
@@ -259,7 +353,7 @@ button {
     display: block;
     width: 30px;
     height: 50px;
-    border: 2px solid var(--color-black);
+    border: 2px solid rgba(255,255,255,0.9);
     border-radius: 25px;
     position: relative;
 }
@@ -739,19 +833,21 @@ button {
     
     .nav-menu {
         position: fixed;
-        left: -100%;
-        top: 70px;
-        flex-direction: column;
-        background-color: var(--color-beige-light);
+        left: 0;
+        top: 70px; /* positioned under the fixed navbar */
+    flex-direction: column;
+    background-color: transparent; /* default transparent so overlay transition looks smooth */
         width: 100%;
         text-align: center;
-        transition: left 0.3s var(--transition-timing);
+        /* hide above the viewport and slide down via transform */
+        transform: translateY(-100%);
+        transition: transform 0.28s var(--transition-timing);
         box-shadow: 0 10px 27px rgba(0, 0, 0, 0.1);
         padding: 2rem 0;
     }
     
     .nav-menu.active {
-        left: 0;
+        transform: translateY(0) !important;
     }
     
     .nav-toggle {
@@ -846,3 +942,73 @@ button {
         font-size: 2rem;
     }
 }
+
+/* ===================================
+   Instagram Embeds
+   =================================== */
+
+.instagram-section { background-color: var(--color-white); }
+
+.instagram-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+    align-items: start;
+    justify-items: center;
+}
+
+.instagram-embed {
+    width: 100%;
+    max-width: 420px; /* restrict very large embeds */
+    margin: 0 auto;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* Force Instagram's injected markup to fit our container and remove injected padding/margins */
+.instagram-embed blockquote,
+.instagram-embed blockquote > div,
+.instagram-embed blockquote > div > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+/* The iframe Instagram injects can carry inline sizing and transforms — neutralize them */
+.instagram-embed iframe {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 260px !important; /* sensible minimum */
+    display: block !important;
+    border: 0 !important;
+    transform: none !important;
+}
+
+/* Some embeds include a wrapper with padding-bottom to enforce aspect ratio. Collapse that so the iframe fills the container */
+.instagram-embed blockquote > div > div[style] {
+    padding-bottom: 0 !important;
+    height: auto !important;
+}
+
+/* Tidy the fallback link and caption so they don't overflow */
+.instagram-embed blockquote a {
+    display: inline-block;
+    padding: 8px 12px;
+    color: var(--color-white) !important;
+    background: rgba(0,0,0,0.5) !important;
+    border-radius: 6px;
+    margin: 0.5rem !important;
+    text-decoration: none !important;
+}
+
+/* smaller max-width on very small screens */
+@media (max-width: 480px) {
+    .instagram-embed { max-width: 100%; }
+}
+
