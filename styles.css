@@ -107,7 +107,7 @@ button {
     left: 0;
     right: 0;
     z-index: 1000;
-    background-color: transparent;
+    background-color: var(--color-black) !important;
     padding: 1.5rem 0;
     transition: background-color var(--transition-speed) var(--transition-timing),
                 box-shadow var(--transition-speed) var(--transition-timing),
@@ -115,8 +115,9 @@ button {
 }
 
 .navbar.scrolled {
-    background-color: var(--color-white);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Keep navbar styling identical when scrolled: remain dark */
+    background-color: var(--color-black) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
     padding: 1rem 0;
 }
 
@@ -132,9 +133,8 @@ button {
 .nav-logo {
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--color-black);
+    color: var(--color-white) !important;
 }
-
 .nav-menu {
     display: flex;
     list-style: none;
@@ -165,7 +165,7 @@ button {
     left: 0 !important; /* ensure it's visible */
     background-color: rgba(0,0,0,0.75) !important;
     color: var(--color-white) !important;
-    z-index: 1600 !important; /* above hero overlay */
+    z-index: 900 !important; /* keep menu behind navbar */
     padding-top: 3.5rem !important;
 }
 
@@ -180,7 +180,7 @@ button {
 
 /* When the mobile menu is open, keep the hamburger/close bars black (always black per request) */
 .nav-toggle.active span {
-    background-color: var(--color-black) !important;
+    background-color: var(--color-white) !important;
 }
 
 /* Default: make nav link text white for simplicity; .navbar.scrolled will override to black for contrast */
@@ -199,7 +199,7 @@ button {
 .navbar.scrolled .nav-link,
 .navbar.scrolled .nav-logo,
 .navbar.scrolled .nav-toggle span {
-    color: var(--color-black) !important;
+    color: var(--color-white) !important;
 }
 
 /* Ensure the hamburger (three bars) are black while the navbar sits over the dark hero
@@ -237,7 +237,7 @@ button {
 .nav-toggle span {
     width: 25px;
     height: 3px;
-    background-color: var(--color-black);
+    background-color: var(--color-white) !important;
     transition: all var(--transition-speed) var(--transition-timing);
 }
 
@@ -837,6 +837,7 @@ button {
         top: 70px; /* positioned under the fixed navbar */
     flex-direction: column;
     background-color: transparent; /* default transparent so overlay transition looks smooth */
+        z-index: 900; /* keep menu behind the navbar by default */
         width: 100%;
         text-align: center;
         /* hide above the viewport and slide down via transform */
@@ -847,8 +848,9 @@ button {
     }
     
     .nav-menu.active {
-        transform: translateY(0) !important;
-    }
+            transform: translateY(0) !important;
+            z-index: 900 !important; /* keep the opened menu visually behind the navbar */
+        }
     
     .nav-toggle {
         display: flex;
