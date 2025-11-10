@@ -202,11 +202,9 @@ button {
     color: var(--color-white) !important;
 }
 
-/* Ensure the hamburger (three bars) are black while the navbar sits over the dark hero
-   -- keep the bars visibly dark against the image; this targets the span backgrounds */
-.navbar:not(.scrolled) .nav-toggle span {
-    background-color: var(--color-black) !important;
-}
+/* Hamburger bar color: consolidated — remove per-state black rule so the
+    single authoritative override at the end of the file controls the color. */
+/* (Removed: .navbar:not(.scrolled) .nav-toggle span { background-color: var(--color-black) !important; }) */
 
 .nav-link:hover::after,
 .nav-link.active::after {
@@ -842,15 +840,19 @@ button {
         text-align: center;
         /* hide above the viewport and slide down via transform */
         transform: translateY(-100%);
-        transition: transform 0.28s var(--transition-timing);
+        visibility: hidden;
+        opacity: 0;
+        transition: transform 0.28s var(--transition-timing), opacity 0.28s var(--transition-timing);
         box-shadow: 0 10px 27px rgba(0, 0, 0, 0.1);
         padding: 2rem 0;
     }
     
     .nav-menu.active {
-            transform: translateY(0) !important;
-            z-index: 900 !important; /* keep the opened menu visually behind the navbar */
-        }
+        transform: translateY(0) !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 900 !important; /* keep the opened menu visually behind the navbar */
+    }
     
     .nav-toggle {
         display: flex;
@@ -1012,5 +1014,12 @@ button {
 /* smaller max-width on very small screens */
 @media (max-width: 480px) {
     .instagram-embed { max-width: 100%; }
+}
+
+/* Ensure hamburger bars are always white */
+.nav-toggle span,
+.nav-toggle.active span,
+.navbar .nav-toggle span {
+    background-color: var(--color-white) !important;
 }
 
